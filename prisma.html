@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Poliedro de n caras</title>
+	<style>
+		body { margin: 0; }
+		canvas { display: block; }
+	</style>
+</head>
+
+<body>
+	<script src="https://cdn.rawgit.com/mrdoob/three.js/r123/build/three.min.js"></script>
+	<script type="module">
+        import { OrbitControls } from 'https://unpkg.com/three@0.126.1/examples/jsm/controls/OrbitControls.js';
+		// Definir el número de caras del poliedro
+		
+        
+        
+
+        /*function geometriametriasbases(vertice, color)
+        {
+            var x = new THREE.Vector3(1, 0, 0);
+            var y = new THREE.Vector3(0, 1, 0);
+            var z = new THREE.Vector3(0, 0, 1);
+
+            var base = new THREE.geometriametry();
+            var vertices = vertice;
+            var largoV = vertices.lenght;
+
+            for(var i = 0; i < largoV.lenght; i++)
+            {
+                x = vertices[i][0];
+                y = vertices[i][1];
+                z = vertices[i][2];
+
+                vector = new THREE.Vector3(x, y, z);
+                base.vertices.push(vector);
+            }
+            var material = new THREE.MeshBasicMaterial({color : color});
+		    var bases = new THREE.Line(base, material);
+        }*/
+
+
+        
+
+
+
+
+		// Crear el material y el objeto mesh del poliedro
+        /*var material = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide });
+		var mesh = new THREE.Mesh(geometriametry, material);*/
+
+
+		
+            // Crear la escena, la cámara y el renderizador de Three.js
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            var size = 700;
+            var arrowSize = 40;
+            var divisions = 20;
+            var origin = new THREE.Vector3(0, 0, 0);
+            var x = new THREE.Vector3(1, 0, 0);
+            var y = new THREE.Vector3(0, 1, 0);
+            var z = new THREE.Vector3(0, 0, 1);
+            var color2 = new THREE.Color(0x333333);
+            var colorR = new THREE.Color(0xAA0000);
+            var colorG = new THREE.Color(0x00AA00);
+            var colorB = new THREE.Color(0x0000AA);
+
+            //Crear la Grilla
+            var gridHelperXZ = new THREE.GridHelper(size, divisions, color2, color2);
+
+            //Flechas
+            var arrowX = new THREE.ArrowHelper(x, origin, arrowSize, colorR);
+            var arrowY = new THREE.ArrowHelper(y, origin, arrowSize, colorG);
+            var arrowZ = new THREE.ArrowHelper(z, origin, arrowSize, colorB);
+
+            //Camara
+            camera.position.x = 20;
+            camera.position.y = 20;
+            camera.position.z = 20;
+            camera.lookAt(scene.position);
+
+            //Agregar elementos al escenario
+            scene.add(gridHelperXZ);
+            scene.add(arrowX);
+            scene.add(arrowY);
+            scene.add(arrowZ);
+        
+        
+
+        // Agregar OrbitControls para mover la cámara
+        var orbitControls = new OrbitControls(camera, renderer.domElement);
+		
+		// Agregar el objeto mesh a la escena
+		/*scene.add(mesh);*/
+        // Crear la luz direccional
+        var directionalLight = new THREE.DirectionalLight(0x000000, 1);
+
+        // Configurar la dirección de la luz (en este caso, apuntando hacia abajo y hacia la derecha)
+        directionalLight.position.set(1, -1, 1);
+
+        // Agregar la luz a la escena
+        scene.add(directionalLight);
+		
+        function geometria(vx){
+            var geometria = new THREE.Geometry();
+            var largoVertice = vx.length;
+            for (var i = 0; i < largoVertice; i++){
+            var [x,y,z]=[vx[i][0],vx[i][1],vx[i][2]]
+                var vector = new THREE.Vector3(x, y, z);
+                geometria.vertices.push(vector);
+            }
+        return geometria;
+        }
+
+        var n = 5;
+        var altura = 10;
+        var radio = 5;
+
+        function vertices(n, altura, radio)
+        {
+            var vertices = [];
+
+            for (var i = 0; i <= n; i++) 
+            {
+                var Alpha=(2 * Math.PI)/ n;
+                var x = radio*Math.cos((i)*Alpha);
+                var y = altura;
+                var z = radio*Math.sin((i)*Alpha);
+                vertices[i]=[x, y, z];
+		    }
+            return vertices;
+        }
+
+        const v=vertices(n, altura, radio);
+
+        function prisma(vertices){
+
+
+            const material = new THREE.MeshBasicMaterial({color : 0x000000});
+            const geo = geometria(vertices);
+            const figura = new THREE.Line(geometria, material);
+            
+            scene.add(figura);
+        }
+        prisma(v);
+
+
+		// RENDERIZADO 
+        function render() 
+        {
+            requestAnimationFrame(render);
+            renderer.render(scene, camera);
+        }
+
+        render();
+
+	</script>
+</body>
+</html>
